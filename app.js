@@ -29,7 +29,7 @@ server.use(express.json());
 server.use(express.static(path.join(__dirname , 'uploads')))
 server.use(teachersRoute,childRouter,classRouter);
 server.use(login);
-server.use(authenticationMW);
+// server.use(authenticationMW);
 
 // Not Found  request url and method
 server.use((request,response)=>{

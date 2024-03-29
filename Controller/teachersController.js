@@ -67,23 +67,55 @@ asyncHandeller(async(req , res,next)=>{
 }
 );
 
-exports.updateTeacher = (req , res , next) => { 
-    teacherSchema.updateOne({
-        _id:req.params.id
-    },{
-        $set:{
+
+exports.updateTeacher = asyncHandeller(async(req , res , next) => {
+    const updatedBrand = await userModel.findByIdAndUpdate(
+        req.params.id,
+        {
             fullName:req.body.fullName,
             email:req.body.email,
-            password:req.body.password
-        }
-    }).then(data=>{
-        if(data.matchedCount==0)
-            next(new Error("Teacher not Found"));
-        else
-            res.status(200).json({data});
-    })
-    .catch(error=>next(error));
-};
+        },
+        {new:true});
+
+    if(!updatedBrand){
+        return next(new ApiError(`Can not update this Id : ${req.params.id}`) , 404);
+    }
+    res.status(200).json({data:updatedBrand})
+});
+
+
+
+// exports.updateTeacher = (req , res , next) => { 
+//     teacherSchema.updateOne({
+//         _id:req.params.id
+//     },{
+//         $set:{
+//             fullName:req.body.fullName,
+//             email:req.body.email,
+//             // password:req.body.password
+//         }
+//     }).then(data=>{
+//         if(data.matchedCount==0)
+//             next(new Error("Teacher not Found"));
+//         else
+//             res.status(200).json({data});
+//     })
+//     .catch(error=>next(error));
+// };
+
+exports.changePass = asyncHandeller(async(req , res , next) => {
+    const updatedBrand = await userModel.findByIdAndUpdate(
+        req.params.id,
+        {
+            password:await bcrypt.hash(req.body.password,12)
+        },
+        {new:true});
+
+    if(!updatedBrand){
+        return next(new ApiError(`Can not update this Id : ${req.params.id}`) , 404);
+    }
+    res.status(200).json({data:updatedBrand})
+});
 
 exports.deleteTeacher = (req , res , next) => {
     teacherSchema.deleteOne({

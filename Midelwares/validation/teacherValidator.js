@@ -26,10 +26,10 @@ exports.insertValidator = [
             }))
 ];
 exports.updateValidator = [
-    body("_id")
-    .isMongoId()
-    .withMessage("Enter valid mongo id"),
-    
+    // body("_id")
+    // .isMongoId()
+    // .withMessage("Enter valid mongo id"),
+
     body("fullName")
         .optional()
         .isAlpha()

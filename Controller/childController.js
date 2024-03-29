@@ -49,8 +49,6 @@ exports.resizeImage = asyncHandeller( async(req , res , next) =>{
     next();
 });
 
-
-
 // exports.uploadChildImage = upload.single('image');
 
 

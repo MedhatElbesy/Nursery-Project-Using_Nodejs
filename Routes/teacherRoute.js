@@ -8,9 +8,13 @@ const {
     updateValidator,
     deleteValidator
     } = require("../Midelwares/validation/teacherValidator");
-const {uploadTeacherImage,resizeImage,uploadTeachetImage} = require('../Controller/teachersController');
+const {uploadTeacherImage,resizeImage,changePass} = require('../Controller/teachersController');
 const validatonResult = require("../Midelwares/validation/validationsResault");
 const isAuthorized = require("./../Midelwares/authenticationMW");
+
+
+
+router.route('/changepass/:id' , changePass);
 
 
 router 
