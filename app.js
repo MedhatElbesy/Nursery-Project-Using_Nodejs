@@ -6,6 +6,7 @@ const mongoose  = require('mongoose');
 const teachersRoute = require("./Routes/teacherRoute");
 const childRouter = require("./Routes/ChildRoute");
 const classRouter = require("./Routes/ClassRoute");
+const autheTeacherRoute = require('./Routes/authTeacherRoute ');
 const authenticationMW = require("./Midelwares/authenticationMW");
 const login=require("./Routes/authentication");
 
@@ -27,8 +28,8 @@ mongoose
 
 server.use(express.json());
 server.use(express.static(path.join(__dirname , 'uploads')))
-server.use(teachersRoute,childRouter,classRouter);
-server.use(login);
+server.use(teachersRoute,childRouter,classRouter,autheTeacherRoute);
+// server.use(login);
 // server.use(authenticationMW);
 
 // Not Found  request url and method

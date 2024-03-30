@@ -62,8 +62,8 @@ exports.updateValidator = [
         .notEmpty()
         .optional()
         .withMessage("Enter value of builiding")
-    ];
+];
     
 exports.deleteValidator = [
     param('id').isInt().withMessage('ID must be an integer'),
-    ];
+];

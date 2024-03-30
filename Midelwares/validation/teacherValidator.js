@@ -1,9 +1,11 @@
-const { body, param, query } = require("express-validator");
-const childSchema = require("../../Model/childModel");
+const { body, param, query, check} = require("express-validator");
 const asyncHandeller = require('express-async-handler');
+const  bcrypt = require('bcryptjs');
+
+const childSchema = require("../../Model/childModel");
 const teacherModel = require('../../Model/teacherModel')
+
 exports.insertValidator = [
-  
 
     body("fullName")
         .isAlpha()
@@ -11,9 +13,22 @@ exports.insertValidator = [
         .isLength({ min: 5 })
         .withMessage(" Teacher full Name lenght>5"),
 
-    body("password")
-        .isStrongPassword()
-        .withMessage(" Pass must be strong"),
+    check('password')
+        .notEmpty()
+        .withMessage('Password required')
+        .isLength({ min: 6 })
+        .withMessage('Password must be at least 6 characters')
+        .custom((password, { req }) => {
+            if (password !== req.body.passwordConfirm) {
+                throw new Error('Password Confirmation incorrect');
+            }
+            return true;
+        }
+    ),
+
+    check('passwordConfirm')
+        .notEmpty()
+        .withMessage('Password confirmation required'),
 
     body("email")
         .isEmail()
@@ -25,6 +40,7 @@ exports.insertValidator = [
                 }
             }))
 ];
+
 exports.updateValidator = [
     // body("_id")
     // .isMongoId()
@@ -47,6 +63,45 @@ exports.updateValidator = [
         .optional()
         .withMessage("Email have ashape")
         
+];
+
+exports.changePasswordValidator = [
+
+    // check('_id')
+    //     .isMongoId()
+    //     .withMessage("Can't update invalid user id format "),
+
+    body("currentPassword")
+        .notEmpty()
+        .withMessage("you must enter currentPassword"),
+        
+    body("passwordComfirm")
+        .notEmpty()
+        .withMessage("you must enter passwordComfirm"),
+
+    body("password")
+        .notEmpty()
+        .withMessage("you must enter New Password")
+        .custom(async(val,{req}) => {
+            // verify current password
+            const teacher = await teacherModel.findById(req.params.id)
+            if(!teacher){
+                throw new Error('There is no teacher for this id');
+            }
+            const isCorrectPassword = await bcrypt.compare(
+                req.body.currentPassword,
+                teacher.password
+            );
+
+            if (!isCorrectPassword) {
+                throw new Error('Incorrect current password');
+            }
+            // verify comfirm password
+            if(val !== req.body.passwordComfirm){
+                throw new Error('Password Comfirm incorrect');
+            }
+            return true;
+        }),
 ];
 
 exports.deleteValidator = [

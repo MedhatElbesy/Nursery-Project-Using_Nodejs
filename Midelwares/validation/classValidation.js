@@ -1,10 +1,11 @@
 const { body, param, query } = require("express-validator");
-const teacherSchema = require("../../Model/teacherModel");
-const childSchema = require("../../Model/childModel");
 const asyncHandeller = require('express-async-handler');
 
+const teacherSchema = require("../../Model/teacherModel");
+const childSchema = require("../../Model/childModel");
+
 exports.insertValidator = [
-    body("id")
+    body("_id")
         .isInt()
         .withMessage(" id should be integer"),
 
@@ -34,7 +35,7 @@ exports.insertValidator = [
         .notEmpty()
         .withMessage('childId must belong to childs')
         .custom(asyncHandeller(async (val) => {
-            const child = await childSchema.findOne({ id: val });
+            const child = await childSchema.findOne({ _id: val });
             if (!child) throw new Error("childId must belong to children");
         })),
 

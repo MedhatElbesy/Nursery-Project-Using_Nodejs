@@ -6,7 +6,8 @@ const controller = require("../Controller/teachersController");
 const {
     insertValidator,
     updateValidator,
-    deleteValidator
+    deleteValidator,
+    changePasswordValidator
     } = require("../Midelwares/validation/teacherValidator");
 const {uploadTeacherImage,resizeImage,changePass} = require('../Controller/teachersController');
 const validatonResult = require("../Midelwares/validation/validationsResault");
@@ -14,7 +15,9 @@ const isAuthorized = require("./../Midelwares/authenticationMW");
 
 
 
-router.route('/changepass/:id' , changePass);
+// router.route('/changepass/:id' , changePass);
+router.route('/changepass/:id')
+    .patch(changePasswordValidator,validatonResult,changePass)
 
 
 router 
