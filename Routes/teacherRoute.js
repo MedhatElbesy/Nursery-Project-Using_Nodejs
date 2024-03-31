@@ -12,20 +12,18 @@ const {
 const {uploadTeacherImage,resizeImage,changePass} = require('../Controller/teachersController');
 const validatonResult = require("../Midelwares/validation/validationsResault");
 const isAuthorized = require("./../Midelwares/authenticationMW");
+const protectt = require('../Midelwares/validation/authTeacherValidator')
 
 
-
-// router.route('/changepass/:id' , changePass);
 router.route('/changepass/:id')
     .patch(changePasswordValidator,validatonResult,changePass)
-
 
 router 
     .route("/teachers")
     .get(controller.getAllTeachers)
-    .post(uploadTeacherImage,resizeImage,insertValidator,validatonResult,controller.insertTeacher);
+    .post(protectt.protect,uploadTeacherImage,resizeImage,insertValidator,validatonResult,controller.insertTeacher);
     
-    router
+router
     .route("/teachers/:id")
     .get(controller.getTeacherById)
     .patch(updateValidator,validatonResult,controller.updateTeacher)

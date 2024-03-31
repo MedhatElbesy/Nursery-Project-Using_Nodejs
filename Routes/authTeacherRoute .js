@@ -8,16 +8,14 @@ const validatonResult = require("../Midelwares/validation/validationsResault");
 // const isAuthorized = require("./../Midelwares/authenticationMW");
 
 
-
-
-
-// router 
-//     .route("/teachers/signup")
-//     .post(signupValidator,signup);
+router 
+    .route("/signup")
+    .post(signupValidator,validatonResult,signup);
     
-// router 
-//     .route("/teachers/login")
-//     .post(loginValidator,login);
+router 
+    .route("/login")
+    .post(loginValidator,validatonResult,login);
+
     // router
     // .route("/teachers/:id")
     // .get(controller.getTeacherById)

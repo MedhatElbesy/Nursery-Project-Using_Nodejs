@@ -2,6 +2,7 @@ const path = require('path');
 
 const express = require('express');
 const mongoose  = require('mongoose');
+require('dotenv').config()
 
 const teachersRoute = require("./Routes/teacherRoute");
 const childRouter = require("./Routes/ChildRoute");
@@ -24,12 +25,13 @@ mongoose
     .catch((error) => {
         console.log("Error" + error);
 });
+// dbConnection();
+
 
 
 server.use(express.json());
 server.use(express.static(path.join(__dirname , 'uploads')))
 server.use(teachersRoute,childRouter,classRouter,autheTeacherRoute);
-// server.use(login);
 // server.use(authenticationMW);
 
 // Not Found  request url and method
@@ -41,3 +43,13 @@ server.use((request,response)=>{
 server.use((error,request,response,next)=>{
     response.status(500).json({data:`Error MW ${error}`})
 });
+
+
+// app.use(express.json());
+// app.use(express.static(path.join(__dirname,'uploads')));
+
+
+// if(process.env.NODE_ENV === 'development'){
+//     app.use(morgan('dev'));
+//     console.log(`mode is ${process.env.NODE_ENV}`);
+// };

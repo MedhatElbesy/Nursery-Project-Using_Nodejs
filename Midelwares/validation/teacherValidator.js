@@ -6,6 +6,11 @@ const childSchema = require("../../Model/childModel");
 const teacherModel = require('../../Model/teacherModel')
 
 exports.insertValidator = [
+    body("_id")
+        .isMongoId()
+        .withMessage("must enter mongoooid ")
+        .notEmpty()
+        .withMessage("must enter id "),
 
     body("fullName")
         .isAlpha()

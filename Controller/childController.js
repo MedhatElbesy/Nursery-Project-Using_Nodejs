@@ -70,20 +70,7 @@ exports.getChildById = (req , res ,next) => {
     })
     .catch((error) => next(error));};
 
-// exports.insertChild = (req , res , next) => {
-//     let object = new childSchema(req.body);
-//     console.log(req.body);
-//     object
-//     .save()
-//     .then((data) => {
-//         console.log(data);
-
-//         res.status(200).json({ data });
-//     })
-//     .catch((error) => next(error));};
-
-exports.insertChild = 
-asyncHandeller(async(req , res,next)=>{
+exports.insertChild = asyncHandeller(async(req , res,next)=>{
     const newDocument = await childSchema.create(req.body);
     res.status(201).json({ data: newDocument });
 }

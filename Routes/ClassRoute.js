@@ -3,12 +3,14 @@ const router = express.Router();
 const controller = require("../Controller/classController");
 const {insertValidator, updateValidator,deleteValidator} = require("../Midelwares/validation/classValidation")
 const validatonResult = require("../Midelwares/validation/validationsResault")
+const AuthService = require('../Midelwares/validation/authTeacherValidator')
+
+
+
 router
     .route("/class")
-    .get(controller.getAllClasses)
-    .post(insertValidator,validatonResult,controller.insertClass)
-    // .patch(updateValidator,validatonResult,controller.updateClass)
-    // .delete(controller.deleteClass);
+    .get(AuthService.protect,controller.getAllClasses)
+    .post(AuthService.allowTo('admin'),insertValidator,validatonResult,controller.insertClass);
 
 router
     .route("/class/:id")

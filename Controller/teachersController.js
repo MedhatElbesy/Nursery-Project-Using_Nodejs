@@ -84,31 +84,12 @@ exports.updateTeacher = asyncHandeller(async(req , res , next) => {
     res.status(200).json({data:teacherUpdate})
 });
 
-
-
-// exports.updateTeacher = (req , res , next) => { 
-//     teacherSchema.updateOne({
-//         _id:req.params.id
-//     },{
-//         $set:{
-//             fullName:req.body.fullName,
-//             email:req.body.email,
-//             // password:req.body.password
-//         }
-//     }).then(data=>{
-//         if(data.matchedCount==0)
-//             next(new Error("Teacher not Found"));
-//         else
-//             res.status(200).json({data});
-//     })
-//     .catch(error=>next(error));
-// };
-
 exports.changePass = asyncHandeller(async(req , res , next) => {
     const updatePass = await teacherSchema.findByIdAndUpdate(
         req.params.id,
         {
-            password:await bcrypt.hash(req.body.password,12)
+            password : await bcrypt.hash(req.body.password,12),
+            passwordChangedAt: Date.now()
         },
         {new:true});
 
