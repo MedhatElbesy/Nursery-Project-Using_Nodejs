@@ -1,6 +1,8 @@
 
-#Nursery System Backend
+Nursery System Backend
+
 Overview
+
 This project aims to create a RESTful API backend for a nursery system. The system will have one administrator,
 teachers, and children. The administrator will manage teachers and children. The backend will be built using Node.js and Express,
 with MongoDB as the database. JSON responses with correct status codes will be provided for all endpoints.
