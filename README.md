@@ -16,6 +16,7 @@ git clone [repository_url](https://github.com/MedhatElbesy/Nursery-Project-Using
 cd nurserySystem
 
 3-Install dependencies:
+
 npm install
 
 4-Create a .env file in the root directory and add the following environment variables:
