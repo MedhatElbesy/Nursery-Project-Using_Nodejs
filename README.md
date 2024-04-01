@@ -50,28 +50,43 @@ Endpoints
 1- Teacher Routes
 
 GET /teachers: Get all teachers.
+
 GET /teachers/:id: Get teacher by ID.
+
 POST /teachers: Add a new teacher.
+
 PUT /teachers/:id: Update teacher data.
+
 DELETE /teachers/:id: Delete specified teacher.
+
 GET /teachers/supervisors: Get all class supervisors.
 
 2- Child Routes
 
 GET /children: Get all children.
+
 GET /children/:id: Get child by ID.
+
 POST /children: Add a new child.
+
 PUT /children/:id: Update child data.
+
 DELETE /children/:id: Delete specified child.
 
 3- Class Routes
 
 GET /classes: Get all classes.
+
 GET /classes/:id: Get class by ID.
+
 POST /classes: Add a new class.
+
 PUT /classes/:id: Update class data.
+
 DELETE /classes/:id: Delete specified class.
+
 GET /classes/child/:id: Get class children info.
+
 GET /classes/teacher/:id: Get class supervisor info.
 
 Additional Features
