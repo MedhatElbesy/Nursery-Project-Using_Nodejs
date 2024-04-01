@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+const autoIncrement = require('@alec016/mongoose-autoincrement');
+
+const connection = mongoose.connection
+autoIncrement.initialize(connection);
+
+
 
 //1- create schema object
 const schema = new mongoose.Schema({
@@ -16,7 +21,13 @@ const schema = new mongoose.Schema({
 });
 
 
-
+schema.plugin(autoIncrement.plugin, { model: 'Child', field: '_id' });
+schema.plugin(autoIncrement.plugin, {
+    model: 'Child',
+    field: '_id',
+    startAt: 1,
+    incrementBy: 1
+});
 // const setImageURL = (doc) => {
 //     if(doc.image){
 //         const imageUrl = `${process.env.BASE_URL}/childs/${doc.image}`;

@@ -1,19 +1,12 @@
 const multer  = require('multer');
 const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require("bcrypt");
 const asyncHandeller = require('express-async-handler');
 
-
-const bcrypt = require("bcrypt");
-const saltRounds = 10
-const salt = bcrypt.genSaltSync(saltRounds);
-// const productModel = require('../Model/teacherModel');
-// const ApiError = require('../utils/apiError');
 const teacherSchema = require("../Model/teacherModel");
 const classSchema = require("../Model/classModel");
 const {uploadeSingleImage} = require('../Midelwares/uploadeImageMiddleware');
-
-
 
 exports.uploadTeacherImage = uploadeSingleImage("image");
 
@@ -30,8 +23,6 @@ exports.resizeImage = asyncHandeller( async(req , res , next) =>{
     req.body.image = uniqueFileName ;
     next();
 });
-
-
 
 exports.getAllTeachers = (req , res  ,next) => {
     teacherSchema.find({})
@@ -52,22 +43,11 @@ exports.getTeacherById = (req , res ,next) => {
     .catch((error) => next(error));
 };
 
-// exports.insertTeacher = (req , res , next) => {
-//     let object = new teacherSchema(req.body);
-//     object
-//     .save()
-//     .then((data) => {
-//         res.status(200).json({ data });
-//     })
-//     .catch((error) => next(error));
-// };
-
 exports.insertTeacher = asyncHandeller(async(req , res,next)=>{
     const newDocument = await teacherSchema.create(req.body);
     res.status(201).json({ data: newDocument });
 }
 );
-
 
 exports.updateTeacher = asyncHandeller(async(req , res , next) => {
     const teacherUpdate = await teacherSchema.findByIdAndUpdate(
@@ -98,12 +78,6 @@ exports.changePass = asyncHandeller(async(req , res , next) => {
     }
     res.status(200).json({data:updatePass})
 });
-
-
-
-
-
-
 
 exports.deleteTeacher = (req , res , next) => {
     teacherSchema.deleteOne({

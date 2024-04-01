@@ -1,9 +1,9 @@
-const { body, param, query } = require("express-validator");
+const { body, param } = require("express-validator");
 
 exports.insertValidator = [
-    body("_id")
-        .isInt()
-        .withMessage(" id should be  int"),
+    // body("_id")
+    //     .isInt()
+    //     .withMessage(" id should be  int"),
 
     body("fullName")
         .isAlpha()
@@ -31,10 +31,11 @@ exports.insertValidator = [
         .notEmpty()
         .withMessage("Enter value of builiding")
 ];
+
 exports.updateValidator = [
-    body("_id")
-        .isInt()
-        .withMessage(" id should be  int"),
+    // body("_id")
+    //     .isInt()
+    //     .withMessage(" id should be  int"),
 
     body("fullName")
         .optional()
@@ -58,12 +59,19 @@ exports.updateValidator = [
         .optional()
         .withMessage("Enter value of street"),
 
-    body("address.building")
+        body("address.building")
+        .notEmpty()
+        .optional()
+        .withMessage("Enter value of builiding"),
+        
+        body("address.city")
         .notEmpty()
         .optional()
         .withMessage("Enter value of builiding")
 ];
-    
+
 exports.deleteValidator = [
-    param('id').isInt().withMessage('ID must be an integer'),
+    param('id')
+        .isInt()
+        .withMessage('ID must be an integer'),
 ];

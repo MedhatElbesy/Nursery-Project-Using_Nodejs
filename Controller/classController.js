@@ -1,4 +1,6 @@
 const classSchema = require("../Model/classModel");
+const asyncHandeller = require('express-async-handler');
+
 
 exports.getAllClasses = (req , res  ,next) => {
     classSchema.find({})
@@ -18,16 +20,20 @@ exports.getClassById = (req , res ,next) => {
     })
     .catch((error) => next(error));
 };
-
-exports.insertClass = (req , res , next) => {
-    let object = new classSchema(req.body);
-    object
-    .save()
-    .then((data) => {
-        res.status(200).json({ data });
-    })
-    .catch((error) => next(error));
-};
+exports.insertClass = asyncHandeller(async(req , res,next)=>{
+    const newDocument = await classSchema.create(req.body);
+    res.status(201).json({ data: newDocument });
+}
+);
+// exports.insertClass = (req , res , next) => {
+//     let object = new classSchema(req.body);
+//     object
+//     .save()
+//     .then((data) => {
+//         res.status(200).json({ data });
+//     })
+//     .catch((error) => next(error));
+// };
 
 exports.updateClass = (req , res , next) => { 
     classSchema.updateOne({

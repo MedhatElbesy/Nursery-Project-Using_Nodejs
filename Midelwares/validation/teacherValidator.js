@@ -6,11 +6,6 @@ const childSchema = require("../../Model/childModel");
 const teacherModel = require('../../Model/teacherModel')
 
 exports.insertValidator = [
-    body("_id")
-        .isMongoId()
-        .withMessage("must enter mongoooid ")
-        .notEmpty()
-        .withMessage("must enter id "),
 
     body("fullName")
         .isAlpha()
@@ -41,15 +36,13 @@ exports.insertValidator = [
         .custom((val) =>
             teacherModel.findOne({ email: val }).then((teacher) => {
                 if (teacher) {
-                return Promise.reject(new Error('E-mail already in teacher'));
+                    return Promise.reject(new Error('E-mail already in teacher'));
                 }
-            }))
+            })
+        )
 ];
 
 exports.updateValidator = [
-    // body("_id")
-    // .isMongoId()
-    // .withMessage("Enter valid mongo id"),
 
     body("fullName")
         .optional()
@@ -71,10 +64,6 @@ exports.updateValidator = [
 ];
 
 exports.changePasswordValidator = [
-
-    // check('_id')
-    //     .isMongoId()
-    //     .withMessage("Can't update invalid user id format "),
 
     body("currentPassword")
         .notEmpty()
@@ -111,12 +100,12 @@ exports.changePasswordValidator = [
 
 exports.deleteValidator = [
     param('_id')
-        .isMongoId()
-        .withMessage('ID must be a valid MongoDB ObjectId')
+        // .isMongoId()
+        // .withMessage('ID must be a valid MongoDB ObjectId')
         .custom(asyncHandeller(async (_id) => {
             const classesCount = await childSchema.countDocuments({ supervisor: _id });
             if (classesCount > 0) {
-                throw new Error('Teacher cannot be deleted as they are associated with existing classes.');
+                throw new Error('Teacher cannot be deleted as it belong to classes.');
             }
         }))
 ];

@@ -6,31 +6,7 @@ const asyncHandeller = require('express-async-handler');
 const childSchema = require("../Model/childModel");
 const {uploadeSingleImage} = require('../Midelwares/uploadeImageMiddleware');
 
-
 exports.uploadChildImage = uploadeSingleImage("image");
-
-
-
-// const multerStorage = multer.diskStorage({
-//     destination : function (req , file ,cb){
-//         cb(null, 'uploads/childs')
-//     },
-//     filename : function (req , file , cb){
-//         const ext = file.mimetype.split('/')[1];
-//         const fileName = `teacher-${uuidv4()}-${Date.now()}.${ext}`
-//         cb(null,fileName)
-//     },
-// });
-
-//     const multerFilter = function(req , file , cb){
-//         if(file.mimetype.startsWith("image")){
-//             cb(null , true);
-//         }else{
-//             cb(new ApiError("only images allowed" , 400) , false);
-//         }
-//     };
-
-// const upload = multer({ storage :multerStorage,fileFilter: multerFilter});
 
 exports.resizeImage = asyncHandeller( async(req , res , next) =>{
     const uniqueFileName = `child-${uuidv4()}-${Date.now()}.jpeg`;
@@ -48,10 +24,6 @@ exports.resizeImage = asyncHandeller( async(req , res , next) =>{
     console.log(req.body.image);
     next();
 });
-
-// exports.uploadChildImage = upload.single('image');
-
-
 
 exports.getAllChild = (req , res  ,next) => {
     childSchema.find({})

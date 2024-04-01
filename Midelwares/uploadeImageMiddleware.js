@@ -5,7 +5,7 @@ const ApiError = require('../utils/apiError');
     const multerOptional = ( ) => {
         const multerStorage = multer.memoryStorage();
         const multerFilter = function(req , file , cb){
-            if(file.mimetype.startsWith("image")){
+            if(file.ype.startsWith("image")){
                 cb(null , true);
             }else{
                 cb(new ApiError("only images allowed" , 400) , false);
@@ -18,6 +18,5 @@ const ApiError = require('../utils/apiError');
 exports.uploadeSingleImage = (fieldName) => 
     multerOptional().single(fieldName);
 
-exports.uploadListOfImages = (arrayOfFields) =>
-    multerOptional().fields(arrayOfFields);
+
     
