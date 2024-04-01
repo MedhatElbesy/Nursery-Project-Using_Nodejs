@@ -8,8 +8,8 @@ const teacherModel = require('../Model/teacherModel');
 const generateToken = (payload) =>
     jwt.sign(
         {teacherId:payload} ,
-        "process.env.JWT_SECRET", {
-            expiresIn: "1hr"},
+        process.env.JWT_SECRET_KEY, {
+            expiresIn: process.env.JWT_EXPIRE_TIME},
 );
 
 exports.signup = asyncHandeller(async(req , res , next) => {

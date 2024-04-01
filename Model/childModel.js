@@ -12,12 +12,12 @@ const schema = new mongoose.Schema({
     fullName: { type: String, required: true },
     age: { type: Number, required: true },
     level: { type: String, enum: ["PreKG", "KG1", "KG2"], required: true }, 
+    image:{type:String},
     address: { 
         city: { type: String, required: true },
         street: { type: String, required: true },
         building: { type: String, required: true }
     },
-    image:{String}
 });
 
 
@@ -28,22 +28,22 @@ schema.plugin(autoIncrement.plugin, {
     startAt: 1,
     incrementBy: 1
 });
-// const setImageURL = (doc) => {
-//     if(doc.image){
-//         const imageUrl = `${process.env.BASE_URL}/childs/${doc.image}`;
-//         doc.image = imageUrl;
-//     }
-// };
+const setImageURL = (doc) => {
+    if(doc.image){
+        const imageUrl = `http://localhost:8000/childs/${doc.image}`;
+        doc.image = imageUrl;
+    }
+};
 
-// categorySchema.post('init',(doc) => {
-//     //return image url + image name
-//     setImageURL(doc);
-// });
+schema.post('init',(doc) => {
+    //return image url + image name
+    setImageURL(doc);
+});
 
-// categorySchema.post('save',(doc) => {
-//     //return image url + image name
-//     setImageURL(doc);
-// });
+schema.post('save',(doc) => {
+    //return image url + image name
+    setImageURL(doc);
+});
 
 
 //2-mapping

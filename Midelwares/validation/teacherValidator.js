@@ -3,6 +3,7 @@ const asyncHandeller = require('express-async-handler');
 const  bcrypt = require('bcryptjs');
 
 const childSchema = require("../../Model/childModel");
+const classSchema = require("../../Model/classModel");
 const teacherModel = require('../../Model/teacherModel')
 
 exports.insertValidator = [
@@ -97,15 +98,16 @@ exports.changePasswordValidator = [
             return true;
         }),
 ];
+;
 
 exports.deleteValidator = [
-    param('_id')
-        // .isMongoId()
-        // .withMessage('ID must be a valid MongoDB ObjectId')
+    param("id")
+        .isMongoId()
+        .withMessage("Teacher Id Should Be Mongo Id")
         .custom(asyncHandeller(async (_id) => {
-            const classesCount = await childSchema.countDocuments({ supervisor: _id });
-            if (classesCount > 0) {
-                throw new Error('Teacher cannot be deleted as it belong to classes.');
+            const teacherSupervise = await classSchema.countDocuments({ supervisor: _id });
+            if (teacherSupervise) {
+                throw new Error("Teacher Is A Supervisor, Can't Be Deleted");
             }
-        }))
+    }))
 ];

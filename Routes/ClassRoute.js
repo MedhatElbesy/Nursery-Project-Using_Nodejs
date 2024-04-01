@@ -3,7 +3,7 @@ const router = express.Router();
 const controller = require("../Controller/classController");
 const {insertValidator, updateValidator,deleteValidator} = require("../Midelwares/validation/classValidation")
 const validatonResult = require("../Midelwares/validation/validationsResault")
-const AuthService = require('../Midelwares/validation/authValidator')
+const AuthService = require('../Midelwares/validation/authTeacherValidator')
 
 /**
  * @swagger
@@ -11,22 +11,47 @@ const AuthService = require('../Midelwares/validation/authValidator')
  *   get:
  *     summary: Get all classes
  *     description: Retrieve a list of all classes
+ *     security:
+ *       - jwt: []
  *     responses:
  *       200:
  *         description: A list of classes
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  *   post:
  *     summary: Create a new class
- *     description: Create a new class if the user is an admin
+ *     description: Create a new class
  *     security:
- *       - BearerAuth: []
+ *       - jwt: []
  *     requestBody:
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Class'
+ *             type: object
+ * properties:
+ *              name:
+ *          type:string
+ *        description: name of class.
+ *          supervisor:
+ *          type: string
+ *          format: mongoId
+ *           example: 507f1f77bcf86cd799439011
+ *           children:
+ *          type: int
+ *          description:array of child
+ * 
  *     responses:
- *       200:
- *         description: Successfully created a class
+ *       201:
+ *         description: New class created successfully
+ *       400:
+ *         description: Bad request - Invalid input data
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  */
 
 router
@@ -37,7 +62,7 @@ router
         controller.getAllClasses)
     .post(
         AuthService.allowTo('admin'),
-        AuthService.protect,
+        // AuthService.protect,
         insertValidator,
         validatonResult,
         controller.insertClass);
@@ -48,44 +73,74 @@ router
  *   get:
  *     summary: Get class by ID
  *     description: Retrieve a class by its ID
+ *     security:
+ *       - jwt: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID of the class
  *         schema:
  *           type: string
  *     responses:
  *       200:
  *         description: A class object
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  *   patch:
  *     summary: Update class by ID
- *     description: Update a class by its ID
+ *     description: Update a class record by its ID
+ *     security:
+ *       - jwt: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID of the class
  *         schema:
  *           type: string
  *     requestBody:
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Class'
+ *             type: object
+ *             properties:
+ *          _id
+ *          type:int
  *     responses:
  *       200:
- *         description: Successfully updated class
+ *         description: Class updated successfully
+ *       400:
+ *         description: Bad request - Invalid input data
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  *   delete:
  *     summary: Delete class by ID
- *     description: Delete a class by its ID
+ *     description: Delete a class record by its ID
+ *     security:
+ *       - jwt: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID of the class
  *         schema:
  *           type: string
+ * properties:
+ *               _id:
+ *                 type: int
  *     responses:
  *       200:
- *         description: Successfully deleted class
+ *         description: Class deleted successfully
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  */
 
 router
@@ -111,17 +166,29 @@ router
  * @swagger
  * /class/teacher/{id}:
  *   get:
- *     summary: Get class supervisor information
- *     description: Retrieve information about the supervisor of a specific class
+ *     summary: Get class supervisor info
+ *     description: Retrieve class supervisor info by teacher ID
+ *     security:
+ *       - jwt: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID of the teacher
  *         schema:
  *           type: string
+ * properties:
+ *               _id:
+ *                 type: string
+ *                 format: mongoId
+ *                 example: 507f2f77bcf86cd799439011
  *     responses:
  *       200:
- *         description: Class supervisor information
+ *         description: Class supervisor info retrieved successfully
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  */
 
 router
@@ -135,19 +202,29 @@ router
  * @swagger
  * /class/child/{id}:
  *   get:
- *     summary: Get information about children in a class
- *     description: Retrieve information about children in a specific class
+ *     summary: Get class children info
+ *     description: Retrieve class children info by class ID
+ *     security:
+ *       - jwt: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID of the class
  *         schema:
  *           type: string
+ * properties:
+ *               _id:
+ *                 type: string                
+ *                 example: 1
  *     responses:
  *       200:
- *         description: Information about children in the class
+ *         description: Class children info retrieved successfully
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  */
-
 router
     .route("/class/child/:id")    
     .get(

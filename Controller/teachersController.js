@@ -3,13 +3,16 @@ const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require("bcrypt");
 const asyncHandeller = require('express-async-handler');
+const fs = require("fs");
 
 const teacherSchema = require("../Model/teacherModel");
 const classSchema = require("../Model/classModel");
 const {uploadeSingleImage} = require('../Midelwares/uploadeImageMiddleware');
+const validationResult = require('../Midelwares/validation/validationsResault')
+
+
 
 exports.uploadTeacherImage = uploadeSingleImage("image");
-
 exports.resizeImage = asyncHandeller( async(req , res , next) =>{
     const uniqueFileName = `teacher-${uuidv4()}-${Date.now()}.jpeg`;
     // console.log(req.file);
@@ -79,14 +82,26 @@ exports.changePass = asyncHandeller(async(req , res , next) => {
     res.status(200).json({data:updatePass})
 });
 
-exports.deleteTeacher = (req , res , next) => {
-    teacherSchema.deleteOne({
-        _id:req.params.id
-    }).then(data=>{
-        res.status(200).json({data});
-    })
-    .catch(error=>next(error));
-};
+exports.deleteTeacher = asyncHandeller(async (req, res, next) => {
+    const data = await teacherSchema.findOneAndDelete({
+        _id: req.params.id,
+    });
+
+    if (!data) {
+        return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    if (data.image) {
+        const deletedImagePath = `./uploads/teachers/${data.image}`;
+        try {
+            await fs.unlinkSync(deletedImagePath);
+        } catch (err) {
+            return next(err);
+        }
+    }
+
+    res.status(200).json({ message: "Teacher deleted successfully" });
+});
 
 exports.allClassSupervisors = (req , res , next) => {
     classSchema.find({supervisor: req.params.id})

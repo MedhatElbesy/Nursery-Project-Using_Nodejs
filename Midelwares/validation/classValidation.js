@@ -5,9 +5,7 @@ const teacherSchema = require("../../Model/teacherModel");
 const childSchema = require("../../Model/childModel");
 
 exports.insertValidator = [
-    // body("_id")
-    //     .isInt()
-    //     .withMessage(" id should be integer"),
+
 
     body("name")
         .isAlpha()
@@ -38,9 +36,8 @@ exports.insertValidator = [
             const child = await childSchema.findOne({ _id: val });
             if (!child) throw new Error("childId must belong to children");
         })),
-
-
 ];
+
 exports.updateValidator = [
 
     body("name")
@@ -73,6 +70,7 @@ exports.updateValidator = [
             if (!child) throw new Error("childId must belong to children");
         })),
 ];
+
 exports.deleteValidator = [
     param('id')
         .isInt()

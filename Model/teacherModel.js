@@ -3,7 +3,6 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const bcrypt = require('bcryptjs');
 
 const schema = new mongoose.Schema({
-    // _id: { type: mongoose.Schema.Types.ObjectId }, 
     fullName: { type: String },
     password: {type: String , required: true },
     email: { type: String}, 
@@ -17,22 +16,22 @@ const schema = new mongoose.Schema({
 {passwordChangedAt: Date.now()});
 
 
-// const setImageURL = (doc) => {
-//     if(doc.image){
-//         const imageUrl = `${process.env.BASE_URL}/teachers/${doc.image}`;
-//         doc.image = imageUrl;
-//     }
-// };
+const setImageURL = (doc) => {
+    if(doc.image){
+        const imageUrl = `http://localhost:8000/teachers/${doc.image}`;
+        doc.image = imageUrl;
+    }
+};
 
-// categorySchema.post('init',(doc) => {
-//     //return image url + image name
-//     setImageURL(doc);
-// });
+schema.post('init',(doc) => {
+    //return image url + image name
+    setImageURL(doc);
+});
 
-// categorySchema.post('save',(doc) => {
-//     //return image url + image name
-//     setImageURL(doc);
-// });
+schema.post('save',(doc) => {
+    //return image url + image name
+    setImageURL(doc);
+});
 
 
 
@@ -42,5 +41,4 @@ schema.pre('save',async function(next){
     next();
 });
 
-// schema.plugin(AutoIncrement, { id: '_id' });
 module.exports = mongoose.model("Teacher", schema);

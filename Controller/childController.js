@@ -6,8 +6,8 @@ const asyncHandeller = require('express-async-handler');
 const childSchema = require("../Model/childModel");
 const {uploadeSingleImage} = require('../Midelwares/uploadeImageMiddleware');
 
-exports.uploadChildImage = uploadeSingleImage("image");
 
+exports.uploadChildImage = uploadeSingleImage("image");
 exports.resizeImage = asyncHandeller( async(req , res , next) =>{
     const uniqueFileName = `child-${uuidv4()}-${Date.now()}.jpeg`;
     // console.log(req.file);
@@ -67,13 +67,25 @@ exports.updateChild = (req , res , next) => {
     .catch(error=>next(error));
 };
 
-exports.deleteChild = (req , res , next) => {
-    childSchema.deleteOne({
-        _id:req.params.id
-    }).then(data=>{
-        res.status(200).json({data});
-    })
-    .catch(error=>next(error));
-};
+exports.deleteChild = asyncHandeller(async (req, res, next) => {
+    const data = await childSchema.findOneAndDelete({
+        _id: req.params.id,
+    });
+
+    if (!data) {
+        return res.status(404).json({ message: "Child not found" });
+    }
+
+    if (data.image) {
+        const deletedImagePath = `./uploads/childs/${data.image}`;
+        try {
+            await fs.unlinkSync(deletedImagePath);
+        } catch (err) {
+            return next(err);
+        }
+    }
+
+    res.status(200).json({ message: "Child deleted successfully" });
+});
 
 
