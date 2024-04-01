@@ -8,6 +8,7 @@ teachers, and children. The administrator will manage teachers and children. The
 with MongoDB as the database. JSON responses with correct status codes will be provided for all endpoints.
 
 Installation
+
 1-Clone the repository:
 git clone [repository_url](https://github.com/MedhatElbesy/Nursery-Project-Using_Nodejs.git)
 
