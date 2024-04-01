@@ -10,9 +10,11 @@ with MongoDB as the database. JSON responses with correct status codes will be p
 Installation
 
 1-Clone the repository:
+
 git clone [repository_url](https://github.com/MedhatElbesy/Nursery-Project-Using_Nodejs.git)
 
 2-Navigate to the project directory:
+
 cd nurserySystem
 
 3-Install dependencies:
@@ -20,11 +22,15 @@ cd nurserySystem
 npm install
 
 4-Create a .env file in the root directory and add the following environment variables:
+
 SECRET_KEY=your_secret_key
+
 DB_URL=your_mongodb_url
+
 PORT=your_port_number
 
 Project Structure
+
 The project follows the MVC (Model-View-Controller) architecture and has the following structure:
 
 * models: Contains data models for teachers, children, and classes.
@@ -34,11 +40,15 @@ The project follows the MVC (Model-View-Controller) architecture and has the fol
 * uploads: Stores uploaded profile pictures.
 
 Running the Server
+
 Start the server by running:
+
 npm run dev
 
 Endpoints
+
 1- Teacher Routes
+
 GET /teachers: Get all teachers.
 GET /teachers/:id: Get teacher by ID.
 POST /teachers: Add a new teacher.
@@ -47,6 +57,7 @@ DELETE /teachers/:id: Delete specified teacher.
 GET /teachers/supervisors: Get all class supervisors.
 
 2- Child Routes
+
 GET /children: Get all children.
 GET /children/:id: Get child by ID.
 POST /children: Add a new child.
@@ -54,6 +65,7 @@ PUT /children/:id: Update child data.
 DELETE /children/:id: Delete specified child.
 
 3- Class Routes
+
 GET /classes: Get all classes.
 GET /classes/:id: Get class by ID.
 POST /classes: Add a new class.
@@ -63,6 +75,7 @@ GET /classes/child/:id: Get class children info.
 GET /classes/teacher/:id: Get class supervisor info.
 
 Additional Features
+
 * All endpoints have server-side validation using express-validator.
 * MongoDB is used as the database.
 * Swagger documentation is available for all endpoints.
@@ -75,4 +88,5 @@ This project is supervised by [Eman Fathi] Teaching Assistant of the Open Source
 Ministry of Communications and Information Technology.
 
   Contributors
+  
 Medhat Elbesy
