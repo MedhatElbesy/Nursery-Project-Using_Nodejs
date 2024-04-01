@@ -4,7 +4,7 @@ const controller = require("../Controller/childController");
 const {insertValidator,updateValidator,deleteValidator} = require("../Midelwares/validation/childValidator");
 const {uploadChildImage,resizeImage} = require('../Controller/childController')
 const validatonResult = require("../Midelwares/validation/validationsResault")
-const AuthService = require('../Midelwares/validation/authValidator')
+const AuthService = require('../Midelwares/validation/authTeacherValidator')
 
 /**
  * @swagger
@@ -12,25 +12,57 @@ const AuthService = require('../Midelwares/validation/authValidator')
  *   get:
  *     summary: Get all children
  *     description: Retrieve a list of all children
+ *     security:
+ *       - jwt: []
  *     responses:
  *       200:
  *         description: A list of children
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  *   post:
  *     summary: Create a new child
- *     description: Create a new child with image upload
+ *     description: Create a new child record
+ *     security:
+ *       - jwt: []
  *     requestBody:
+ *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               image:
+ *  properties:
+ *               fullName:
  *                 type: string
+ *                 description:  full name of the child.
+ *               age:
+ *                 type: number
+ *                 description:  age of the child.
+ *               level:
+ *                 type: string
+ *                 enum: [ PreKG , KG1 , KG2 ]
+ *                 description:  level of the child.
+ *               address[city]:
+ *                 type: string
+ *               address[street]:
+ *                 type: string
+ *               address[building]:
+ *                 type: string
+ *               image:
+ *                 type: file
  *                 format: binary
- *               // Add other fields as required by your schema
+ *                 description:  image of the child.
+ *             
  *     responses:
- *       200:
- *         description: Successfully created a child
+ *       201:
+ *         description: New child created successfully
+ *       400:
+ *         description: Bad request - Invalid input data
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  */
 
 router
@@ -48,55 +80,97 @@ router
         validatonResult,
         controller.insertChild
     );
-/**
+
+    /**
  * @swagger
  * /child/{id}:
  *   get:
  *     summary: Get child by ID
  *     description: Retrieve a child by its ID
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
+ *     security:
+ *       - jwt: []
+ *  
  *     responses:
  *       200:
  *         description: A child object
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  *   patch:
  *     summary: Update child by ID
- *     description: Update a child by its ID with image upload
+ *     description: Update a child record by its ID
+ *     security:
+ *       - jwt: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID of the child
  *         schema:
  *           type: string
  *     requestBody:
+ *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             properties:
- *               image:
+ *               id:
+ *                 type: number
+ *                 description: The ID of the child to update.
+ *               fullName:
  *                 type: string
+ *                 description:  full name of the child.
+ *               age:
+ *                 type: number
+ *                 description:  age of the child.
+ *               level:
+ *                 type: string
+ *                 enum: [ PreKG , KG1 , KG2 ]
+ *                 description:  level of the child.
+ *               address[city]:
+ *                 type: string
+ *               address[street]:
+ *                 type: string
+ *               address[building]:
+ *                 type: string
+ *               image:
+ *                 type: file
  *                 format: binary
- *               // Add other fields as required by your schema
+ *                 description:  image of the child.
  *     responses:
  *       200:
- *         description: Successfully updated child
+ *         description: Child updated successfully
+ *       400:
+ *         description: Bad request - Invalid input data
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  *   delete:
  *     summary: Delete child by ID
- *     description: Delete a child by its ID
+ *     description: Delete a child record by its ID
+ *     security:
+ *       - jwt: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID of the child
  *         schema:
  *           type: string
+ * properties:
+ * _id:
+ * type:int
+ *          example: 2
  *     responses:
  *       200:
- *         description: Successfully deleted child
+ *         description: Child deleted successfully
+ *       401:
+ *         description: Unauthorized - User not logged in
+ *       403:
+ *         description: Forbidden - User does not have permission
  */
 
 router

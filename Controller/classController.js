@@ -25,15 +25,6 @@ exports.insertClass = asyncHandeller(async(req , res,next)=>{
     res.status(201).json({ data: newDocument });
 }
 );
-// exports.insertClass = (req , res , next) => {
-//     let object = new classSchema(req.body);
-//     object
-//     .save()
-//     .then((data) => {
-//         res.status(200).json({ data });
-//     })
-//     .catch((error) => next(error));
-// };
 
 exports.updateClass = (req , res , next) => { 
     classSchema.updateOne({

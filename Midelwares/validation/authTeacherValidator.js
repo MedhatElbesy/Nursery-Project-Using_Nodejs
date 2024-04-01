@@ -63,7 +63,7 @@ exports.protect = asyncHandeller(async(req , res , next) => {
         return next (new ApiError('Please login to get access', 401))
     };
     // 2- check if it expire or no change happend
-    const decoded = jwt.verify(token,"process.env.JWT_SECRET");
+    const decoded = jwt.verify(token,process.env.JWT_SECRET_KEY);
     // 3- check if user exit
     const currentUser = await teacherModel.findById(decoded.teacherId);
     if (!currentUser) {

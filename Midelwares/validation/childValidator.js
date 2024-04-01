@@ -1,9 +1,7 @@
 const { body, param } = require("express-validator");
 
 exports.insertValidator = [
-    // body("_id")
-    //     .isInt()
-    //     .withMessage(" id should be  int"),
+    
 
     body("fullName")
         .isAlpha()
@@ -33,9 +31,7 @@ exports.insertValidator = [
 ];
 
 exports.updateValidator = [
-    // body("_id")
-    //     .isInt()
-    //     .withMessage(" id should be  int"),
+   
 
     body("fullName")
         .optional()
