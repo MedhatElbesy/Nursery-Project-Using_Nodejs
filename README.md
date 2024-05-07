@@ -11,7 +11,7 @@ Installation
 
 1-Clone the repository:
 
-git clone [repository_url](https://github.com/MedhatElbesy/Nursery-Project-Using_Nodejs.git)
+git clone (https://github.com/MedhatElbesy/Nursery-Project-Using_Nodejs.git)
 
 2-Navigate to the project directory:
 
